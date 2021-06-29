@@ -2,6 +2,8 @@ import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:legal_nest/constants.dart';
 import 'package:legal_nest/home/home.dart';
+import 'package:legal_nest/newPosts/newPosts.dart';
+import 'package:legal_nest/rights/rights.dart';
 
 class Holder extends StatefulWidget {
   const Holder({Key? key}) : super(key: key);
@@ -13,6 +15,7 @@ class Holder extends StatefulWidget {
 class _HolderState extends State<Holder> {
   int _currentPage = 2;
   final _pageController = PageController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -49,7 +52,12 @@ class _HolderState extends State<Holder> {
                       Icons.add,
                       color: kPrimaryDark,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return NewPostPage();
+                      }));
+                    },
                   ),
                 ],
               ),
@@ -65,7 +73,7 @@ class _HolderState extends State<Holder> {
           Container(),
           Container(),
           HomePage(),
-          Container(),
+          RightsPage(),
           Container(),
         ],
         onPageChanged: (index) {
@@ -110,6 +118,13 @@ class _HolderState extends State<Holder> {
           ],
         ),
       ),
+      resizeToAvoidBottomInset: false,
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 }

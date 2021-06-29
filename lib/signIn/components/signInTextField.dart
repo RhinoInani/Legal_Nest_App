@@ -4,13 +4,14 @@ import 'package:legal_nest/constants.dart';
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
     Key? key,
-    this.header,
-    this.controller,
-    this.hint,
-    this.obscureText,
-    this.textInputType,
+    required this.header,
+    required this.controller,
+    required this.hint,
+    required this.obscureText,
+    required this.textInputType,
     required this.size,
-    this.icon,
+    required this.icon,
+    required this.height,
   }) : super(key: key);
 
   final String? header;
@@ -20,11 +21,12 @@ class CustomTextField extends StatelessWidget {
   final Size size;
   final TextEditingController? controller;
   final Icon? icon;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: size.height * 0.12,
+      height: height,
       padding: EdgeInsets.all(size.height * 0.02),
       child: TextFormField(
         controller: controller,

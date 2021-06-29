@@ -78,6 +78,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         textInputType: TextInputType.emailAddress,
                         controller: username,
                         icon: Icon(Icons.email),
+                        height: size.height * 0.12,
                       ),
                       CustomTextField(
                         size: size,
@@ -87,6 +88,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         textInputType: TextInputType.text,
                         controller: password,
                         icon: Icon(Icons.lock),
+                        height: size.height * 0.12,
                       ),
                       SignInButton(
                         size: size,
