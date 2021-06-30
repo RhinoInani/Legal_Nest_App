@@ -1,52 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:legal_nest/constants.dart';
 import 'package:legal_nest/signIn/components/signInButton.dart';
 import 'package:legal_nest/signIn/components/signInTextField.dart';
 
-class NewPostPage extends StatelessWidget {
+class NewPostPage extends StatefulWidget {
   NewPostPage({Key? key}) : super(key: key);
 
+  @override
+  _NewPostPageState createState() => _NewPostPageState();
+}
+
+class _NewPostPageState extends State<NewPostPage> {
   TextEditingController textController = TextEditingController();
+
+  String date = "Select Date";
+  DateTime? picked;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: SingleChildScrollView(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "New Post",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: kPrimaryDark,
-                      fontSize: size.height * 0.03,
-                      decoration: TextDecoration.underline,
-                      decorationColor: kPrimaryLight,
-                      decorationThickness: 0.5,
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
+              SizedBox(
+                height: size.height * 0.1,
+              ),
+              Text(
+                "New Post",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: kPrimaryDark,
+                  fontSize: size.height * 0.03,
+                  decoration: TextDecoration.underline,
+                  decorationColor: kPrimaryLight,
+                  decorationThickness: 0.5,
+                ),
               ),
               SizedBox(
-                height: size.height * 0.05,
+                height: size.height * 0.03,
               ),
               CustomTextField(
                 header: "Title",
@@ -104,15 +102,66 @@ class NewPostPage extends StatelessWidget {
                 ),
               ),
               SignInButton(
-                  size: size,
-                  buttonText: "Done",
-                  backgroundColor: kPrimaryDark,
-                  press: () {})
+                size: size,
+                buttonText: "$date",
+                backgroundColor: kPrimaryLight,
+                press: () {
+                  _selectDate(context);
+                },
+              ),
+              SizedBox(
+                height: size.height * 0.02,
+              ),
+              SignInButton(
+                size: size,
+                buttonText: "Upload",
+                backgroundColor: kPrimaryLight,
+                press: () {},
+              ),
+              SizedBox(
+                height: size.height * 0.02,
+              ),
+              SignInButton(
+                size: size,
+                buttonText: "Done",
+                backgroundColor: kPrimaryDark,
+                press: () {},
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _selectDate(context) async {
+    picked = await showDatePicker(
+      context: context,
+      initialDate: picked ??= DateTime.now(),
+      firstDate: DateTime(2005),
+      lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData(
+            colorScheme: ColorScheme.dark(
+              primary: kPrimaryLight,
+              onPrimary: Colors.black,
+              surface: kPrimaryDark,
+              onSurface: Colors.black,
+              secondary: Colors.black,
+              onSecondary: Colors.black,
+              secondaryVariant: Colors.black,
+              brightness: Brightness.dark,
+            ),
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: child!,
+        );
+      },
+    );
+    setState(() {
+      date = DateFormat.yMMMMd('en_US').format(picked!);
+    });
   }
 }
 

@@ -1,5 +1,7 @@
 import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:legal_nest/account/account.dart';
+import 'package:legal_nest/camera/camera.dart';
 import 'package:legal_nest/constants.dart';
 import 'package:legal_nest/home/home.dart';
 import 'package:legal_nest/newPosts/newPosts.dart';
@@ -34,18 +36,31 @@ class _HolderState extends State<Holder> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Legal Nest",
-                    style: TextStyle(
-                      color: kPrimaryDark,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.combine([
-                        TextDecoration.overline,
-                        TextDecoration.underline,
-                      ]),
-                      decorationColor: kPrimaryLight,
-                    ),
+                  RichText(
+                    text: TextSpan(
+                        style: TextStyle(
+                          color: kPrimaryDark,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                          decoration: TextDecoration.combine([
+                            TextDecoration.overline,
+                            TextDecoration.underline,
+                          ]),
+                          decorationColor: kPrimaryLight,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Legal",
+                          ),
+                          TextSpan(
+                            text: " Nest",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              decorationThickness: 0.5,
+                              decorationStyle: TextDecorationStyle.dashed,
+                            ),
+                          ),
+                        ]),
                   ),
                   IconButton(
                     icon: Icon(
@@ -66,15 +81,14 @@ class _HolderState extends State<Holder> {
         ],
       ),
       extendBodyBehindAppBar: true,
-      extendBody: true,
+      extendBody: false,
       body: PageView(
         controller: _pageController,
         children: [
-          Container(),
-          Container(),
+          CameraExampleHome(),
           HomePage(),
           RightsPage(),
-          Container(),
+          AccountPage(),
         ],
         onPageChanged: (index) {
           setState(() => _currentPage = index);
@@ -94,11 +108,6 @@ class _HolderState extends State<Holder> {
               icon: Icon(Icons.camera_alt),
               title: Text("Record"),
               activeColor: kSecondaryLight,
-            ),
-            BottomBarItem(
-              icon: Icon(Icons.mail),
-              title: Text('Mail'),
-              activeColor: kError,
             ),
             BottomBarItem(
               icon: Icon(Icons.home),

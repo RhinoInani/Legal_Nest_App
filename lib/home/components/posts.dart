@@ -4,7 +4,9 @@ import 'package:legal_nest/signIn/components/signInButton.dart';
 import '../../constants.dart';
 
 class Post extends StatefulWidget {
-  const Post({Key? key}) : super(key: key);
+  Post({Key? key, required this.showSupports}) : super(key: key);
+
+  final bool showSupports;
 
   @override
   _PostState createState() => _PostState();
@@ -19,35 +21,38 @@ class _PostState extends State<Post> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Column(
-          children: [
-            IconButton(
-              padding: EdgeInsets.zero,
-              splashColor: Colors.transparent,
-              icon: supports,
-              onPressed: () {
-                setState(() {
-                  if (!isSupport) {
-                    supports = Icon(Icons.favorite);
-                    isSupport = true;
-                    supportCounter++;
-                  } else if (isSupport) {
-                    supports = Icon(Icons.favorite_border);
-                    isSupport = false;
-                    supportCounter--;
-                  }
-                });
-              },
-            ),
-            Text("$supportCounter"),
-            IconButton(
-              splashColor: Colors.transparent,
-              icon: Icon(Icons.flag_outlined),
-              onPressed: () {},
-            )
-          ],
-        ),
+        widget.showSupports
+            ? Column(
+                children: [
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    splashColor: Colors.transparent,
+                    icon: supports,
+                    onPressed: () {
+                      setState(() {
+                        if (!isSupport) {
+                          supports = Icon(Icons.favorite);
+                          isSupport = true;
+                          supportCounter++;
+                        } else if (isSupport) {
+                          supports = Icon(Icons.favorite_border);
+                          isSupport = false;
+                          supportCounter--;
+                        }
+                      });
+                    },
+                  ),
+                  Text("$supportCounter"),
+                  IconButton(
+                    splashColor: Colors.transparent,
+                    icon: Icon(Icons.flag_outlined),
+                    onPressed: () {},
+                  )
+                ],
+              )
+            : Container(),
         Container(
           width: size.width * 0.8,
           height: size.height * 0.5,
@@ -97,6 +102,7 @@ class _PostState extends State<Post> {
                   width: size.width * 0.73,
                   height: size.height * 0.25,
                   child: ListView(
+                    padding: EdgeInsets.zero,
                     children: [
                       Text(
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "

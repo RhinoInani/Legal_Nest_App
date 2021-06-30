@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:legal_nest/constants.dart';
+import 'package:legal_nest/rights/components/drivingRights.dart';
+import 'package:legal_nest/rights/components/publicRights.dart';
 
 class RightsPage extends StatefulWidget {
   RightsPage({Key? key}) : super(key: key);
@@ -15,6 +17,8 @@ class _RightsPageState extends State<RightsPage> {
   double angle = 2 * pi;
   bool extended = false;
   PageController _pageController = PageController();
+  String testRight = "\b "
+      "\n\bYou do not have to consent to a search of yourself or your belongings";
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +57,9 @@ class _RightsPageState extends State<RightsPage> {
                 label: Text('Driving'),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.directions_bike_rounded),
-                selectedIcon: Icon(Icons.directions_bike_outlined),
-                label: Text('Biking'),
+                icon: Icon(Icons.emoji_people),
+                selectedIcon: Icon(Icons.emoji_people),
+                label: Text('Outside'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.home),
@@ -83,16 +87,16 @@ class _RightsPageState extends State<RightsPage> {
           Expanded(
             child: PageView(
               controller: _pageController,
-              pageSnapping: true,
+              pageSnapping: false,
               physics: NeverScrollableScrollPhysics(),
               children: [
+                DrivingRights(),
+                PublicRights(),
                 Container(
-                  child: Center(child: Text("\u2022 Driving")),
+                  child: Center(
+                    child: Text("Home"),
+                  ),
                 ),
-                Container(
-                  child: Center(child: Text("Biking")),
-                ),
-                Container(child: Center(child: Text("Home"))),
                 Container(
                   child: Center(
                     child: Text("Search"),

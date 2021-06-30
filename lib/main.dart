@@ -28,6 +28,11 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.openSansTextTheme(
           Theme.of(context).textTheme.apply(bodyColor: kPrimaryDark),
         ),
+        appBarTheme: AppBarTheme(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          iconTheme: IconThemeData(color: kPrimaryDark),
+        ),
       ),
       home: SignInScreen(),
     );

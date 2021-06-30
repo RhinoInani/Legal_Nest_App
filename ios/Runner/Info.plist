@@ -47,5 +47,9 @@
 &lt;/dict&gt;</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string></string>
 </dict>
 </plist>
