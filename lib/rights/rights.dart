@@ -31,10 +31,10 @@ class _RightsPageState extends State<RightsPage> {
             extended: extended,
             leading: Column(
               children: [
-                SizedBox(
-                  height: size.height * 0.1,
-                  width: size.width * 0.15,
-                ),
+                // SizedBox(
+                //   height: size.height * 0.1,
+                //   width: size.width * 0.15,
+                // ),
                 Transform.rotate(
                   angle: angle,
                   child: IconButton(
@@ -50,6 +50,7 @@ class _RightsPageState extends State<RightsPage> {
                 ),
               ],
             ),
+            backgroundColor: Colors.white,
             destinations: [
               NavigationRailDestination(
                 icon: Icon(Icons.directions_car),

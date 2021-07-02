@@ -35,6 +35,9 @@ class _HomePageState extends State<HomePage> {
           Post(
             showSupports: true,
           ),
+          SizedBox(
+            height: size.height * 0.1,
+          ),
           Column(
             children: [
               Container(

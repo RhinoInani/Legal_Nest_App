@@ -48,8 +48,10 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>Camera usage to record videos and photos in app</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string></string>
+	<string>Microphone usage while recording in app</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To upload photos to posts</string>
 </dict>
 </plist>

@@ -15,7 +15,7 @@ class Holder extends StatefulWidget {
 }
 
 class _HolderState extends State<Holder> {
-  int _currentPage = 2;
+  int _currentPage = 0;
   final _pageController = PageController();
 
   @override
@@ -80,18 +80,20 @@ class _HolderState extends State<Holder> {
           )
         ],
       ),
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       extendBody: false,
       body: PageView(
         controller: _pageController,
         children: [
-          CameraExampleHome(),
           HomePage(),
+          CameraPage(),
           RightsPage(),
           AccountPage(),
         ],
         onPageChanged: (index) {
-          setState(() => _currentPage = index);
+          setState(
+            () => _currentPage = index,
+          );
         },
       ),
       bottomNavigationBar: Padding(
@@ -105,24 +107,28 @@ class _HolderState extends State<Holder> {
           },
           items: <BottomBarItem>[
             BottomBarItem(
-              icon: Icon(Icons.camera_alt),
-              title: Text("Record"),
-              activeColor: kSecondaryLight,
+              icon: Icon(Icons.home),
+              title: Text("Home"),
+              activeColor: kPrimaryDark,
+              inactiveColor: Colors.blueGrey[300],
             ),
             BottomBarItem(
-              icon: Icon(Icons.home),
-              title: Text("Holder"),
+              icon: Icon(Icons.camera_alt),
+              title: Text("Record"),
               activeColor: kPrimaryDark,
+              inactiveColor: Colors.blueGrey[300],
             ),
             BottomBarItem(
               icon: Icon(Icons.info),
               title: Text('Rights'),
-              activeColor: Colors.orange,
+              activeColor: kPrimaryDark,
+              inactiveColor: Colors.blueGrey[300],
             ),
             BottomBarItem(
               icon: Icon(Icons.person),
               title: Text('Account'),
-              activeColor: Colors.greenAccent.shade700,
+              activeColor: kPrimaryDark,
+              inactiveColor: Colors.blueGrey[300],
             ),
           ],
         ),

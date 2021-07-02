@@ -24,11 +24,11 @@ class _SignInScreenState extends State<SignInScreen> {
         width: double.infinity,
         height: size.height,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/LegalNestBackground.png"),
-            fit: BoxFit.fill,
-          ),
-        ),
+            // image: DecorationImage(
+            //   image: AssetImage("assets/LegalNestBackground.png"),
+            //   fit: BoxFit.fill,
+            // ),
+            ),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,16 +38,45 @@ class _SignInScreenState extends State<SignInScreen> {
                 height: size.height * 0.1,
               ),
               Center(
-                child: Text(
-                  "Legal Nest",
-                  style: TextStyle(fontSize: size.height * 0.05),
+                child: RichText(
+                  text: TextSpan(
+                      style: TextStyle(
+                        color: kPrimaryDark,
+                        fontSize: size.height * 0.05,
+                        fontWeight: FontWeight.w400,
+                        decoration: TextDecoration.combine([
+                          TextDecoration.overline,
+                          TextDecoration.underline,
+                        ]),
+                        decorationColor: kPrimaryLight,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "Legal",
+                        ),
+                        TextSpan(
+                          text: " Nest",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            decorationThickness: 0.5,
+                            decorationStyle: TextDecorationStyle.dashed,
+                          ),
+                        ),
+                      ]),
+                ),
+              ),
+              Center(
+                child: Container(
+                  height: size.height * 0.15,
+                  child: Image.asset("assets/legal_nest_logo.png"),
                 ),
               ),
               SizedBox(
-                height: size.height * 0.05,
+                height: size.height * 0.03,
               ),
               Padding(
-                padding: const EdgeInsets.all(15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
                 child: RichText(
                   text: TextSpan(
                     style: Theme.of(context).textTheme.headline5,
@@ -103,7 +132,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
-                          vertical: size.height * 0.01,
+                          vertical: size.height * 0.03,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

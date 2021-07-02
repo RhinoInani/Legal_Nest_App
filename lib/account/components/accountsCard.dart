@@ -44,11 +44,11 @@ class AccountsCard extends StatelessWidget {
               ],
             ),
           ),
-          Divider(
-            height: 5,
-            color: Colors.black87,
-            thickness: 0.5,
-          ),
+          // Divider(
+          //   height: 5,
+          //   color: Colors.black87,
+          //   thickness: 0.5,
+          // ),
         ],
       ),
     );

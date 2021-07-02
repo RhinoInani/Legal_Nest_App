@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:legal_nest/constants.dart';
 import 'package:legal_nest/signIn/components/signInButton.dart';
@@ -116,7 +117,11 @@ class _NewPostPageState extends State<NewPostPage> {
                 size: size,
                 buttonText: "Upload",
                 backgroundColor: kPrimaryLight,
-                press: () {},
+                press: () async {
+                  List<PickedFile>? _imageFileList;
+                  final _picker = ImagePicker();
+                  _imageFileList = await _picker.getMultiImage();
+                },
               ),
               SizedBox(
                 height: size.height * 0.02,
@@ -162,6 +167,23 @@ class _NewPostPageState extends State<NewPostPage> {
     setState(() {
       date = DateFormat.yMMMMd('en_US').format(picked!);
     });
+  }
+
+  void _upload(context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            child: Column(
+              children: [
+                TextButton(
+                  onPressed: () {},
+                  child: Text("Upload Photo"),
+                )
+              ],
+            ),
+          );
+        });
   }
 }
 

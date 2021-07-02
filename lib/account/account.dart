@@ -10,7 +10,6 @@ class AccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      extendBodyBehindAppBar: true,
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 10),
         child: SingleChildScrollView(
@@ -18,18 +17,18 @@ class AccountPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: size.height * 0.12,
-              ),
+              // SizedBox(
+              //   height: size.height * 0.12,
+              // ),
               Header(text: "My Account"),
               SizedBox(
                 height: size.height * 0.02,
               ),
-              Divider(
-                height: 5,
-                color: Colors.black87,
-                thickness: 0.5,
-              ),
+              // Divider(
+              //   height: 5,
+              //   color: Colors.black87,
+              //   thickness: 0.5,
+              // ),
               AccountsCard(
                 pressIcon: () {
                   Navigator.of(context)

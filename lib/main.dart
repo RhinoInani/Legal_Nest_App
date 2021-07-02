@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,10 +6,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:legal_nest/constants.dart';
 import 'package:legal_nest/signIn/signInScreen.dart';
 
+import 'camera/camera.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
+  try {
+    cameras = await availableCameras();
+  } on CameraException catch (e) {
+    logError(e.code, e.description);
+  }
 
   runApp(MyApp());
 }
