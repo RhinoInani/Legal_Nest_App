@@ -6,8 +6,11 @@ List<String>? titles;
 List<String>? description;
 List<String>? videos;
 List<String>? usernames;
-List<String>? date;
+List<DateTime>? date;
 List<int>? supports;
+// Map<String, dynamic>? test;
+
+int fireStoreSize = 0;
 final FirebaseAuth auth = FirebaseAuth.instance;
 final FirebaseFirestore store = FirebaseFirestore.instance;
 

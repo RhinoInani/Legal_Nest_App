@@ -42,6 +42,11 @@ class AccountPage extends StatelessWidget {
                 text: "My posts",
               ),
               AccountsCard(
+                pressIcon: () {},
+                icon: Icon(Icons.arrow_forward_ios),
+                text: "Contact Us",
+              ),
+              AccountsCard(
                 pressIcon: () async {
                   await auth.signOut();
                   Navigator.of(context)

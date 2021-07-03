@@ -25,13 +25,6 @@ class _HomePageState extends State<HomePage> {
     );
     _initializeVideoPlayerFuture = _controller.initialize();
     _controller.setLooping(true);
-    // titles!.clear();
-    // description!.clear();
-    // videos!.clear();
-    // usernames!.clear();
-    // date!.clear();
-    // supports!.clear();
-    print(description!.length);
     super.initState();
   }
 
@@ -50,6 +43,7 @@ class _HomePageState extends State<HomePage> {
             username: usernames![index],
             showSupports: true,
             video: videos![index],
+            date: date![index],
           );
         },
       ),

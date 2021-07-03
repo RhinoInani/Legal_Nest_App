@@ -139,8 +139,11 @@ class _SignInScreenState extends State<SignInScreen> {
                               email: username.value.text.trim(),
                               password: password.value.text.trim(),
                             );
+                            setState(() {
+                              buttonText = "Loading...";
+                            });
                             await store.collection("posts").get().then((value) {
-                              print(value.size);
+                              fireStoreSize = value.size;
                               titles = List.generate(
                                 value.size,
                                 (index) => " ",
@@ -163,7 +166,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               );
                               date = List.generate(
                                 value.size,
-                                (index) => " ",
+                                (index) => DateTime.now(),
                                 growable: true,
                               );
                               supports = List.generate(
@@ -172,9 +175,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                 growable: true,
                               );
                             });
+                            await _readData();
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(builder: (context) {
-                              _readData();
                               return Holder();
                             }));
                           } on FirebaseAuthException catch (e) {
@@ -228,47 +231,59 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void _readData() {
-    int counter;
-    store.collection("posts").get().then((querySnapshot) {
+  Future<void> _readData() async {
+    int counter = 0;
+    await store.collection("posts").get().then((querySnapshot) {
       counter = 0;
       querySnapshot.docs.forEach((result) {
         titles!.insert(counter, result.get("title"));
         counter++;
       });
     });
-    store.collection("posts").get().then((querySnapshot) {
+    await store.collection("posts").get().then((querySnapshot) {
       counter = 0;
       querySnapshot.docs.forEach((result) {
-        description!.insert(counter, result.get("description"));
+        // description!.insert(counter, result.get("description"));
+        description![counter] = result.get("description");
         counter++;
       });
     });
-    store.collection("posts").get().then((querySnapshot) {
+    await store.collection("posts").get().then((querySnapshot) {
       counter = 0;
       querySnapshot.docs.forEach((result) {
-        videos!.insert(counter, result.get("video"));
+        // videos!.insert(counter, result.get("video"));
+        videos![counter] = result.get("video");
         counter++;
       });
     });
-    store.collection("posts").get().then((querySnapshot) {
+    await store.collection("posts").get().then((querySnapshot) {
+      int usernamesCounter = 0;
       counter = 0;
       querySnapshot.docs.forEach((result) {
-        usernames!.insert(counter, result.get("creator"));
+        // usernames!.insert(counter, result.get("creator"));
+        List<String>? test = List.generate(fireStoreSize, (index) => " ");
+        test[counter] = result.get("creator");
+        store.collection('users').doc('${test[counter]}').get().then((doc) {
+          usernames![usernamesCounter] = doc.get("screenName");
+          usernamesCounter++;
+        });
         counter++;
       });
     });
-    store.collection("posts").get().then((querySnapshot) {
+    await store.collection("posts").get().then((querySnapshot) {
       counter = 0;
       querySnapshot.docs.forEach((result) {
-        date!.insert(counter, result.get("eventDate").toString());
+        // date!.insert(counter, result.get("eventDate").toString());
+        date![counter] = result.get('eventDate').toDate();
+        // print(date![counter].substring(0, date![counter].indexOf('at')).trim());
         counter++;
       });
     });
-    store.collection("posts").get().then((querySnapshot) {
+    await store.collection("posts").get().then((querySnapshot) {
       counter = 0;
       querySnapshot.docs.forEach((result) {
-        supports!.insert(counter, result.get("supports"));
+        // supports!.insert(counter, result.get("supports"));
+        supports![counter] = result.get("supports");
         counter++;
       });
     });

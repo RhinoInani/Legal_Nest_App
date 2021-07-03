@@ -68,6 +68,14 @@ class _HolderState extends State<Holder> {
                       color: kPrimaryDark,
                     ),
                     onPressed: () {
+                      // store.collection("posts").get().then((value) => {
+                      //       value.docs.forEach((element) {
+                      //         test = element.data();
+                      //         test!.forEach((key, value) {
+                      //           print("$key : $value");
+                      //         });
+                      //       })
+                      //     });
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
                         return NewPostPage();
