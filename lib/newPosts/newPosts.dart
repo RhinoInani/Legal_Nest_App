@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -5,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:legal_nest/constants.dart';
 import 'package:legal_nest/signIn/components/signInButton.dart';
 import 'package:legal_nest/signIn/components/signInTextField.dart';
+
+import '../user.dart';
 
 class NewPostPage extends StatefulWidget {
   NewPostPage({Key? key}) : super(key: key);
@@ -14,25 +17,39 @@ class NewPostPage extends StatefulWidget {
 }
 
 class _NewPostPageState extends State<NewPostPage> {
-  TextEditingController textController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController bodyController = TextEditingController();
+  TextEditingController hashtagController = TextEditingController();
 
   String date = "Select Date";
   DateTime? picked;
 
   @override
+  void initState() {
+    titleController.clear();
+    bodyController.clear();
+    hashtagController.clear();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    bodyController.dispose();
+    hashtagController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                height: size.height * 0.1,
-              ),
               Text(
                 "New Post",
                 textAlign: TextAlign.start,
@@ -49,7 +66,7 @@ class _NewPostPageState extends State<NewPostPage> {
               ),
               CustomTextField(
                 header: "Title",
-                controller: textController,
+                controller: titleController,
                 hint: "The Title of Your Post",
                 obscureText: false,
                 textInputType: TextInputType.text,
@@ -59,8 +76,8 @@ class _NewPostPageState extends State<NewPostPage> {
               ),
               Container(
                 width: size.width * 0.83,
-                padding: EdgeInsets.only(bottom: 15),
                 child: TextField(
+                  controller: bodyController,
                   minLines: 5,
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
@@ -102,6 +119,19 @@ class _NewPostPageState extends State<NewPostPage> {
                   ),
                 ),
               ),
+              Container(
+                padding: EdgeInsets.only(bottom: 15),
+                child: CustomTextField(
+                  header: "Hashtags",
+                  controller: hashtagController,
+                  hint: "Add hashtags to the post",
+                  obscureText: false,
+                  textInputType: TextInputType.text,
+                  size: size,
+                  icon: null,
+                  height: size.height * 0.12,
+                ),
+              ),
               SignInButton(
                 size: size,
                 buttonText: "$date",
@@ -130,7 +160,21 @@ class _NewPostPageState extends State<NewPostPage> {
                 size: size,
                 buttonText: "Done",
                 backgroundColor: kPrimaryDark,
-                press: () {},
+                press: () async {
+                  var newPost = store.collection("posts").doc();
+                  Map<String, dynamic> post = {
+                    'title': titleController.value.text,
+                    'description': bodyController.value.text,
+                    'eventDate': picked,
+                    'supports': 0,
+                    'posted': picked,
+                    'creator': currentUser!.user!.uid,
+                    'video': "",
+                  };
+                  newPost.set(post);
+                  dispose();
+                  Navigator.of(context).pop();
+                },
               ),
             ],
           ),
@@ -166,24 +210,9 @@ class _NewPostPageState extends State<NewPostPage> {
     );
     setState(() {
       date = DateFormat.yMMMMd('en_US').format(picked!);
+      print(DateFormat('yyyy-MM-dd – kk:mm').format(picked!));
+      print(Timestamp.fromDate(picked!));
     });
-  }
-
-  void _upload(context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext bc) {
-          return Container(
-            child: Column(
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  child: Text("Upload Photo"),
-                )
-              ],
-            ),
-          );
-        });
   }
 }
 

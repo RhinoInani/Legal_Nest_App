@@ -1,7 +1,11 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:legal_nest/constants.dart';
 import 'package:legal_nest/holder.dart';
 
+import '../user.dart';
 import 'components/signInButton.dart';
 import 'components/signInTextField.dart';
 
@@ -15,6 +19,12 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
+  String buttonText = "Login";
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,13 +131,70 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       SignInButton(
                         size: size,
-                        buttonText: "Login",
+                        buttonText: "$buttonText",
                         backgroundColor: kPrimaryDark,
-                        press: () {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) {
-                            return Holder();
-                          }));
+                        press: () async {
+                          try {
+                            currentUser = await auth.signInWithEmailAndPassword(
+                              email: username.value.text.trim(),
+                              password: password.value.text.trim(),
+                            );
+                            await store.collection("posts").get().then((value) {
+                              print(value.size);
+                              titles = List.generate(
+                                value.size,
+                                (index) => " ",
+                                growable: true,
+                              );
+                              description = List.generate(
+                                value.size,
+                                (index) => " ",
+                                growable: true,
+                              );
+                              videos = List.generate(
+                                value.size,
+                                (index) => " ",
+                                growable: true,
+                              );
+                              usernames = List.generate(
+                                value.size,
+                                (index) => " ",
+                                growable: true,
+                              );
+                              date = List.generate(
+                                value.size,
+                                (index) => " ",
+                                growable: true,
+                              );
+                              supports = List.generate(
+                                value.size,
+                                (index) => index,
+                                growable: true,
+                              );
+                            });
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (context) {
+                              _readData();
+                              return Holder();
+                            }));
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'user-not-found') {
+                              Timer(Duration(milliseconds: 1000), () {
+                                setState(() {
+                                  buttonText = "No user found";
+                                });
+                              });
+                              setState(() {
+                                buttonText = "Login";
+                              });
+                            } else if (e.code == 'wrong-password') {
+                              Timer(Duration(milliseconds: 1000), () {
+                                setState(() {
+                                  buttonText = "Wrong password";
+                                });
+                              });
+                            }
+                          }
                         },
                       ),
                       Padding(
@@ -159,5 +226,51 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       ),
     );
+  }
+
+  void _readData() {
+    int counter;
+    store.collection("posts").get().then((querySnapshot) {
+      counter = 0;
+      querySnapshot.docs.forEach((result) {
+        titles!.insert(counter, result.get("title"));
+        counter++;
+      });
+    });
+    store.collection("posts").get().then((querySnapshot) {
+      counter = 0;
+      querySnapshot.docs.forEach((result) {
+        description!.insert(counter, result.get("description"));
+        counter++;
+      });
+    });
+    store.collection("posts").get().then((querySnapshot) {
+      counter = 0;
+      querySnapshot.docs.forEach((result) {
+        videos!.insert(counter, result.get("video"));
+        counter++;
+      });
+    });
+    store.collection("posts").get().then((querySnapshot) {
+      counter = 0;
+      querySnapshot.docs.forEach((result) {
+        usernames!.insert(counter, result.get("creator"));
+        counter++;
+      });
+    });
+    store.collection("posts").get().then((querySnapshot) {
+      counter = 0;
+      querySnapshot.docs.forEach((result) {
+        date!.insert(counter, result.get("eventDate").toString());
+        counter++;
+      });
+    });
+    store.collection("posts").get().then((querySnapshot) {
+      counter = 0;
+      querySnapshot.docs.forEach((result) {
+        supports!.insert(counter, result.get("supports"));
+        counter++;
+      });
+    });
   }
 }

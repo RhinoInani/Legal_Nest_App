@@ -104,9 +104,6 @@ class _CameraPageState extends State<CameraPage>
       key: _scaffoldKey,
       body: Column(
         children: <Widget>[
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.13,
-          ),
           Expanded(
             child: Container(
               child: Padding(

@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:legal_nest/home/components/posts.dart';
 import 'package:video_player/video_player.dart';
+
+import '../user.dart';
+import 'components/posts.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -17,11 +19,19 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    int counter = 0;
     _controller = VideoPlayerController.network(
       'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
     );
     _initializeVideoPlayerFuture = _controller.initialize();
     _controller.setLooping(true);
+    // titles!.clear();
+    // description!.clear();
+    // videos!.clear();
+    // usernames!.clear();
+    // date!.clear();
+    // supports!.clear();
+    print(description!.length);
     super.initState();
   }
 
@@ -30,42 +40,52 @@ class _HomePageState extends State<HomePage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       extendBody: true,
-      body: ListView(
-        children: [
-          Post(
+      body: ListView.builder(
+        itemCount: description!.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Post(
+            title: titles![index],
+            supportsValue: supports![index],
+            description: description![index],
+            username: usernames![index],
             showSupports: true,
-          ),
-          SizedBox(
-            height: size.height * 0.1,
-          ),
-          Column(
-            children: [
-              Container(
-                child: FutureBuilder(
-                  future: _initializeVideoPlayerFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      // If the VideoPlayerController has finished initialization, use
-                      // the data it provides to limit the aspect ratio of the video.
-                      return AspectRatio(
-                        aspectRatio: _controller.value.aspectRatio,
-                        // Use the VideoPlayer widget to display the video.
-                        child: VideoPlayer(_controller),
-                      );
-                    } else {
-                      // If the VideoPlayerController is still initializing, show a
-                      // loading spinner.
-                      return Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        ],
+            video: videos![index],
+          );
+        },
       ),
     );
   }
+
+  // Post(
+  //             showSupports: true,
+  //           ),
+  // SizedBox(
+  //   height: size.height * 0.1,
+  // ),
+  // Column(
+  //   children: [
+  //     Container(
+  //       child: FutureBuilder(
+  //         future: _initializeVideoPlayerFuture,
+  //         builder: (context, snapshot) {
+  //           if (snapshot.connectionState == ConnectionState.done) {
+  //             // If the VideoPlayerController has finished initialization, use
+  //             // the data it provides to limit the aspect ratio of the video.
+  //             return AspectRatio(
+  //               aspectRatio: _controller.value.aspectRatio,
+  //               // Use the VideoPlayer widget to display the video.
+  //               child: VideoPlayer(_controller),
+  //             );
+  //           } else {
+  //             // If the VideoPlayerController is still initializing, show a
+  //             // loading spinner.
+  //             return Center(child: CircularProgressIndicator());
+  //           }
+  //         },
+  //       ),
+  //     ),
+  //   ],
+  // ),
 
   void videoDialog(context, Size size) {
     showDialog(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:legal_nest/components/header.dart';
-import 'package:legal_nest/home/components/posts.dart';
 
 class PreviousPosts extends StatelessWidget {
   const PreviousPosts({Key? key}) : super(key: key);
@@ -21,11 +20,9 @@ class PreviousPosts extends StatelessWidget {
             SizedBox(
               height: size.height * 0.03,
             ),
-            Post(showSupports: false),
             SizedBox(
               height: size.height * 0.03,
             ),
-            Post(showSupports: false),
           ],
         ),
       ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:legal_nest/account/components/accountsCard.dart';
 import 'package:legal_nest/account/screens/previousPosts.dart';
 import 'package:legal_nest/components/header.dart';
+import 'package:legal_nest/signIn/signInScreen.dart';
+import 'package:legal_nest/user.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({Key? key}) : super(key: key);
@@ -40,7 +42,13 @@ class AccountPage extends StatelessWidget {
                 text: "My posts",
               ),
               AccountsCard(
-                pressIcon: () {},
+                pressIcon: () async {
+                  await auth.signOut();
+                  Navigator.of(context)
+                      .pushReplacement(MaterialPageRoute(builder: (context) {
+                    return SignInScreen();
+                  }));
+                },
                 icon: Icon(Icons.arrow_forward_ios),
                 text: "Log out",
               )

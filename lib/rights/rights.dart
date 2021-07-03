@@ -50,7 +50,7 @@ class _RightsPageState extends State<RightsPage> {
                 ),
               ],
             ),
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.transparent,
             destinations: [
               NavigationRailDestination(
                 icon: Icon(Icons.directions_car),
