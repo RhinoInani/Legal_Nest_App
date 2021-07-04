@@ -4,7 +4,7 @@ import 'package:legal_nest/signIn/components/signInButton.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../constants.dart';
+import '../../backend/constants.dart';
 
 class Post extends StatefulWidget {
   Post({

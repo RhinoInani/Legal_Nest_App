@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
+import '../backend/constants.dart';
 
 class Header extends StatelessWidget {
   const Header({Key? key, required this.text}) : super(key: key);

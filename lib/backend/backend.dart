@@ -1,4 +1,4 @@
-import 'package:legal_nest/user.dart';
+import 'package:legal_nest/backend/user.dart';
 
 Future<void> readData(int count) async {
   int counter = count;

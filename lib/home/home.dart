@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:legal_nest/constants.dart';
+import 'package:legal_nest/backend/constants.dart';
 
-import '../backend.dart';
-import '../user.dart';
+import '../backend/backend.dart';
+import '../backend/user.dart';
 import 'components/posts.dart';
 
 class HomePage extends StatefulWidget {

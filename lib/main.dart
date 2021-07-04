@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:legal_nest/constants.dart';
+import 'package:legal_nest/backend/constants.dart';
 import 'package:legal_nest/signIn/signInScreen.dart';
 
 import 'camera/camera.dart';

@@ -1,7 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:legal_nest/constants.dart';
+import 'package:legal_nest/backend/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'components/boldText.dart';
 
@@ -19,6 +20,17 @@ class _RightsPageState extends State<RightsPage> {
   PageController _pageController = PageController();
   String testRight = "\b "
       "\n\bYou do not have to consent to a search of yourself or your belongings";
+
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url,
+          forceSafariVC: true,
+          forceWebView: false,
+          headers: <String, String>{'header key': 'header value'});
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +89,11 @@ class _RightsPageState extends State<RightsPage> {
                 icon: Icon(Icons.local_police),
                 selectedIcon: Icon(Icons.local_police),
                 label: Text('Arrested'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.info),
+                selectedIcon: Icon(Icons.info),
+                label: Text('More Info'),
               ),
             ],
             selectedIconTheme: IconThemeData(color: kPrimaryDark),
@@ -193,6 +210,42 @@ class _RightsPageState extends State<RightsPage> {
                           "\n\u2022 When you're arrested, the officer will place you in handcuffs and conduct an immediate search. Then they'll probably put you in a patrol car or call for backup if they're on foot. You'll be processed once you've been taken to a local jail (identified, fingerprinted, photographed, and issued one or more citations). The citation will state a specific offense or charges, as well as the date you must appear in court."),
                       Text(
                           "\n\u2022 You may be detained for several hours, but you could be remanded in custody overnight or even over the weekend (before bail is set). You could be released on your own recognizance, which means you signed a pledge to appear in court, or you could be freed without charges."),
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      BoldText(text: "More Info"),
+                      GestureDetector(
+                        child: Text(
+                          "ACLU",
+                          style: TextStyle(
+                            color: kPrimaryLight,
+                            fontSize: size.height * 0.02,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                        onTap: () {
+                          _launchInBrowser(
+                              "https://www.aclu.org/know-your-rights/stopped-by-police/");
+                        },
+                      ),
+                      GestureDetector(
+                        child: Text(
+                          "Rocket Lawyer",
+                          style: TextStyle(
+                            color: kPrimaryLight,
+                            fontSize: size.height * 0.02,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                        onTap: () {
+                          _launchInBrowser(
+                              "https://www.rocketlawyer.com/blog/police-stops-know-your-rights-when-pulled-over-or-questioned-927132");
+                        },
+                      )
                     ],
                   ),
                 ),

@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:legal_nest/backend.dart';
-import 'package:legal_nest/constants.dart';
+import 'package:legal_nest/backend/backend.dart';
+import 'package:legal_nest/backend/constants.dart';
 import 'package:legal_nest/holder.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../user.dart';
+import '../backend/user.dart';
 import 'components/signInButton.dart';
 import 'components/signInTextField.dart';
 

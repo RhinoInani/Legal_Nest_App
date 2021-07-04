@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:legal_nest/constants.dart';
+import 'package:legal_nest/backend/constants.dart';
 import 'package:legal_nest/signIn/components/signInButton.dart';
 import 'package:legal_nest/signIn/components/signInTextField.dart';
 
-import '../backend.dart';
-import '../user.dart';
+import '../backend/backend.dart';
+import '../backend/user.dart';
 
 class NewPostPage extends StatefulWidget {
   NewPostPage({Key? key}) : super(key: key);

@@ -1,8 +1,8 @@
 import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:legal_nest/account/account.dart';
+import 'package:legal_nest/backend/constants.dart';
 import 'package:legal_nest/camera/camera.dart';
-import 'package:legal_nest/constants.dart';
 import 'package:legal_nest/home/home.dart';
 import 'package:legal_nest/newPosts/newPosts.dart';
 import 'package:legal_nest/rights/rights.dart';
