@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:legal_nest/constants.dart';
 import 'package:video_player/video_player.dart';
 
+import '../backend.dart';
 import '../user.dart';
 import 'components/posts.dart';
 
@@ -33,19 +35,25 @@ class _HomePageState extends State<HomePage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       extendBody: true,
-      body: ListView.builder(
-        itemCount: description!.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Post(
-            title: titles![index],
-            supportsValue: supports![index],
-            description: description![index],
-            username: usernames![index],
-            showSupports: true,
-            video: videos![index],
-            date: date![index],
-          );
+      body: RefreshIndicator(
+        color: kPrimaryDark,
+        onRefresh: () async {
+          await readData(0);
         },
+        child: ListView.builder(
+          itemCount: description!.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Post(
+              title: titles![index],
+              supportsValue: supports![index],
+              description: description![index],
+              username: usernames![index],
+              showSupports: true,
+              video: videos![index],
+              date: date![index],
+            );
+          },
+        ),
       ),
     );
   }

@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:legal_nest/backend.dart';
 import 'package:legal_nest/constants.dart';
 import 'package:legal_nest/holder.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../user.dart';
 import 'components/signInButton.dart';
@@ -24,6 +26,17 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url,
+          forceSafariVC: true,
+          forceWebView: false,
+          headers: <String, String>{'header key': 'header value'});
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -145,37 +158,37 @@ class _SignInScreenState extends State<SignInScreen> {
                             await store.collection("posts").get().then((value) {
                               fireStoreSize = value.size;
                               titles = List.generate(
-                                value.size,
+                                fireStoreSize,
                                 (index) => " ",
                                 growable: true,
                               );
                               description = List.generate(
-                                value.size,
+                                fireStoreSize,
                                 (index) => " ",
                                 growable: true,
                               );
                               videos = List.generate(
-                                value.size,
+                                fireStoreSize,
                                 (index) => " ",
                                 growable: true,
                               );
                               usernames = List.generate(
-                                value.size,
+                                fireStoreSize,
                                 (index) => " ",
                                 growable: true,
                               );
                               date = List.generate(
-                                value.size,
+                                fireStoreSize,
                                 (index) => DateTime.now(),
                                 growable: true,
                               );
                               supports = List.generate(
-                                value.size,
+                                fireStoreSize,
                                 (index) => index,
                                 growable: true,
                               );
                             });
-                            await _readData();
+                            await readData(0);
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(builder: (context) {
                               return Holder();
@@ -209,7 +222,11 @@ class _SignInScreenState extends State<SignInScreen> {
                           children: [
                             Text("Don't have an account?"),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                _launchInBrowser(
+                                  "https://legal-nest.web.app/signup",
+                                );
+                              },
                               child: Text(
                                 "Sign up here!",
                                 style: TextStyle(
@@ -229,63 +246,5 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _readData() async {
-    int counter = 0;
-    await store.collection("posts").get().then((querySnapshot) {
-      counter = 0;
-      querySnapshot.docs.forEach((result) {
-        titles!.insert(counter, result.get("title"));
-        counter++;
-      });
-    });
-    await store.collection("posts").get().then((querySnapshot) {
-      counter = 0;
-      querySnapshot.docs.forEach((result) {
-        // description!.insert(counter, result.get("description"));
-        description![counter] = result.get("description");
-        counter++;
-      });
-    });
-    await store.collection("posts").get().then((querySnapshot) {
-      counter = 0;
-      querySnapshot.docs.forEach((result) {
-        // videos!.insert(counter, result.get("video"));
-        videos![counter] = result.get("video");
-        counter++;
-      });
-    });
-    await store.collection("posts").get().then((querySnapshot) {
-      int usernamesCounter = 0;
-      counter = 0;
-      querySnapshot.docs.forEach((result) {
-        // usernames!.insert(counter, result.get("creator"));
-        List<String>? test = List.generate(fireStoreSize, (index) => " ");
-        test[counter] = result.get("creator");
-        store.collection('users').doc('${test[counter]}').get().then((doc) {
-          usernames![usernamesCounter] = doc.get("screenName");
-          usernamesCounter++;
-        });
-        counter++;
-      });
-    });
-    await store.collection("posts").get().then((querySnapshot) {
-      counter = 0;
-      querySnapshot.docs.forEach((result) {
-        // date!.insert(counter, result.get("eventDate").toString());
-        date![counter] = result.get('eventDate').toDate();
-        // print(date![counter].substring(0, date![counter].indexOf('at')).trim());
-        counter++;
-      });
-    });
-    await store.collection("posts").get().then((querySnapshot) {
-      counter = 0;
-      querySnapshot.docs.forEach((result) {
-        // supports!.insert(counter, result.get("supports"));
-        supports![counter] = result.get("supports");
-        counter++;
-      });
-    });
   }
 }

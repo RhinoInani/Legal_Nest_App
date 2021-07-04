@@ -104,8 +104,7 @@ class _PostState extends State<Post> {
                   ],
                 )
               : Container(),
-          AnimatedContainer(
-            duration: Duration(milliseconds: 300),
+          Container(
             width: size.width * 0.8,
             // height: height,
             decoration: BoxDecoration(
@@ -157,6 +156,7 @@ class _PostState extends State<Post> {
                         child: Text(
                           "${widget.description}",
                           maxLines: maxLines,
+                          overflow: TextOverflow.fade,
                         ),
                       ),
                       widget.description.length >= 350
@@ -184,12 +184,14 @@ class _PostState extends State<Post> {
                     padding: EdgeInsets.only(
                       top: size.height * 0.025,
                     ),
-                    child: SignInButton(
-                      size: size,
-                      buttonText: "Video",
-                      backgroundColor: kPrimaryDark,
-                      press: () {},
-                    ),
+                    child: widget.video == ""
+                        ? Container()
+                        : SignInButton(
+                            size: size,
+                            buttonText: "Video",
+                            backgroundColor: kPrimaryDark,
+                            press: () {},
+                          ),
                   )
                 ],
               ),

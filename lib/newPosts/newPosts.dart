@@ -1,4 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +9,7 @@ import 'package:legal_nest/constants.dart';
 import 'package:legal_nest/signIn/components/signInButton.dart';
 import 'package:legal_nest/signIn/components/signInTextField.dart';
 
+import '../backend.dart';
 import '../user.dart';
 
 class NewPostPage extends StatefulWidget {
@@ -22,7 +25,11 @@ class _NewPostPageState extends State<NewPostPage> {
   TextEditingController hashtagController = TextEditingController();
 
   String date = "Select Date";
-  DateTime? picked;
+  DateTime? picked = DateTime.now();
+  PickedFile? _pickedFile;
+  File? file;
+  UploadTask? task;
+  String videoUrl = "";
 
   @override
   void initState() {
@@ -39,6 +46,8 @@ class _NewPostPageState extends State<NewPostPage> {
     hashtagController.dispose();
     super.dispose();
   }
+
+  String buttonText = "Done";
 
   @override
   Widget build(BuildContext context) {
@@ -119,18 +128,8 @@ class _NewPostPageState extends State<NewPostPage> {
                   ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(bottom: 15),
-                child: CustomTextField(
-                  header: "Hashtags",
-                  controller: hashtagController,
-                  hint: "Add hashtags to the post",
-                  obscureText: false,
-                  textInputType: TextInputType.text,
-                  size: size,
-                  icon: null,
-                  height: size.height * 0.12,
-                ),
+              SizedBox(
+                height: size.height * 0.02,
               ),
               SignInButton(
                 size: size,
@@ -148,9 +147,10 @@ class _NewPostPageState extends State<NewPostPage> {
                 buttonText: "Upload",
                 backgroundColor: kPrimaryLight,
                 press: () async {
-                  List<PickedFile>? _imageFileList;
                   final _picker = ImagePicker();
-                  _imageFileList = await _picker.getMultiImage();
+                  _pickedFile =
+                      (await _picker.getVideo(source: ImageSource.gallery))!;
+                  file = File(_pickedFile!.path);
                 },
               ),
               SizedBox(
@@ -158,21 +158,35 @@ class _NewPostPageState extends State<NewPostPage> {
               ),
               SignInButton(
                 size: size,
-                buttonText: "Done",
+                buttonText: "$buttonText",
                 backgroundColor: kPrimaryDark,
                 press: () async {
+                  setState(() {
+                    buttonText = "Uploading...";
+                    fireStoreSize++;
+                  });
                   var newPost = store.collection("posts").doc();
+                  if (file != null) {
+                    task = _uploadFile(file!);
+                    await task!.whenComplete(() {}).then((value) async {
+                      videoUrl = await value.ref.getDownloadURL();
+                    });
+                    // videoUrl = await snapshot.ref.getDownloadURL();
+                  } else {
+                    videoUrl = "";
+                  }
                   Map<String, dynamic> post = {
                     'title': titleController.value.text,
                     'description': bodyController.value.text,
                     'eventDate': picked,
                     'supports': 0,
-                    'posted': picked,
+                    'posted': DateTime.now(),
                     'creator': currentUser!.user!.uid,
-                    'video': "",
+                    'video': "$videoUrl",
+                    'supporters': <String>[],
                   };
                   newPost.set(post);
-                  dispose();
+                  await readData(0);
                   Navigator.of(context).pop();
                 },
               ),
@@ -210,9 +224,17 @@ class _NewPostPageState extends State<NewPostPage> {
     );
     setState(() {
       date = DateFormat.yMMMMd('en_US').format(picked!);
-      print(DateFormat('yyyy-MM-dd – kk:mm').format(picked!));
-      print(Timestamp.fromDate(picked!));
     });
+  }
+
+  static UploadTask? _uploadFile(File file) {
+    try {
+      final ref = FirebaseStorage.instance.ref().child(currentUser!.user!.uid);
+      return ref.putFile(file);
+    } on FirebaseException catch (err) {
+      print(err);
+      return null;
+    }
   }
 }
 

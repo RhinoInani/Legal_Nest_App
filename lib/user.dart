@@ -8,7 +8,6 @@ List<String>? videos;
 List<String>? usernames;
 List<DateTime>? date;
 List<int>? supports;
-// Map<String, dynamic>? test;
 
 int fireStoreSize = 0;
 final FirebaseAuth auth = FirebaseAuth.instance;

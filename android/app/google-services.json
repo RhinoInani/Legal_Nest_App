@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "407756248226",
+    "project_id": "legal-nest",
+    "storage_bucket": "legal-nest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407756248226:android:e3312a1811bd85e94eb3fb",
+        "android_client_info": {
+          "package_name": "com.rohininani.legal_nest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "407756248226-qcm1dkjb5hvflmlqj9s3t127im4v8spl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCI0zrAlepm9UBxR9Awlg5x2jPb6Hpx5II"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "407756248226-qcm1dkjb5hvflmlqj9s3t127im4v8spl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "407756248226-9dnd854ufqtjbvqgoolrtllocvb9pbau.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.rohininani.legalNest"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
