@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:legal_nest/signIn/components/signInButton.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../constants.dart';
 
@@ -48,10 +49,17 @@ class _PostState extends State<Post> {
 
   int maxLines = 7;
   String readMoreText = "Read more";
+  late VideoPlayerController _controller;
+  late Future<void> _initializeVideoPlayerFuture;
 
   @override
   void initState() {
     supportCounter = widget.supportsValue;
+    _controller = VideoPlayerController.network(
+      '${widget.video}',
+    );
+    _initializeVideoPlayerFuture = _controller.initialize();
+    _controller.setLooping(true);
     super.initState();
   }
 
@@ -190,7 +198,9 @@ class _PostState extends State<Post> {
                             size: size,
                             buttonText: "Video",
                             backgroundColor: kPrimaryDark,
-                            press: () {},
+                            press: () {
+                              videoDialog(context, size);
+                            },
                           ),
                   )
                 ],
@@ -200,5 +210,54 @@ class _PostState extends State<Post> {
         ],
       ),
     );
+  }
+
+  void videoDialog(context, Size size) {
+    Icon play = Icon(Icons.play_arrow);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          actions: [
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  if (_controller.value.isPlaying) {
+                    play = Icon(Icons.pause);
+                    _controller.pause();
+                  } else {
+                    play = Icon(Icons.play_arrow);
+                    _controller.play();
+                  }
+                });
+              },
+              icon: play,
+            )
+          ],
+          content: Container(
+            width: size.width * 0.9,
+            child: FutureBuilder(
+              future: _initializeVideoPlayerFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: VideoPlayer(_controller),
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

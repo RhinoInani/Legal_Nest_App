@@ -162,6 +162,7 @@ class _RightsPageState extends State<RightsPage> {
                   ),
                 ),
                 SingleChildScrollView(
+                  padding: EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -174,6 +175,7 @@ class _RightsPageState extends State<RightsPage> {
                   ),
                 ),
                 SingleChildScrollView(
+                  padding: EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -185,6 +187,12 @@ class _RightsPageState extends State<RightsPage> {
                               "\nYour Miranda rights include the following: "),
                       Text(
                           "\n\u2022 The right to remain silent. You are not required to answer questions about where you are going or coming from; what you are doing; where you live; or where you were born, whether you are a United States citizen, or how you entered the nation. If you choose to exercise this right, simply say so."),
+                      Text(
+                          "\n\u2022 The right to a government-appointed lawyer. After your arrest, you have the right to seek legal assistance and must be given the chance to consult a lawyer. If you can't afford an attorney, a public defender may be assigned to you. The police may not listen in on your lawyer's phone call, but they may listen in on other parties' calls."),
+                      Text(
+                          "\n\u2022 When you're arrested, the officer will place you in handcuffs and conduct an immediate search. Then they'll probably put you in a patrol car or call for backup if they're on foot. You'll be processed once you've been taken to a local jail (identified, fingerprinted, photographed, and issued one or more citations). The citation will state a specific offense or charges, as well as the date you must appear in court."),
+                      Text(
+                          "\n\u2022 You may be detained for several hours, but you could be remanded in custody overnight or even over the weekend (before bail is set). You could be released on your own recognizance, which means you signed a pledge to appear in court, or you could be freed without charges."),
                     ],
                   ),
                 ),
